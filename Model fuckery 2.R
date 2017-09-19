@@ -1,7 +1,7 @@
 library(dplyr)
 
-E.pref<-0.01 #preference for erythrocytes
-R.pref<-1.5 #preferences for reticulocytes
+E.pref<-0.1 #preference for erythrocytes
+R.pref<-1 #preferences for reticulocytes
 
 B.R<-0.5 #susceptibility factor for recipient RBCs
 B.D<-0.5 #susceptibility factor for donor RBCs
@@ -9,19 +9,23 @@ B.D<-0.5 #susceptibility factor for donor RBCs
 mat.D<-24 #average number of hours for parasite to mature in donor RBC
 mat.R<-24 #average number of hours for parasite to mature in recipient RBC
 
-P.D<-8 #parasites produced from a burst donor RBC
-P.R<-8 #parasites produced from a burst recipient RBC
+P.D<-5 #parasites produced from a burst donor RBC
+P.R<-5 #parasites produced from a burst recipient RBC
 
-R.0<-8000000 #starting concentration of RBCs
+R.0<-11700000000 #starting concentration of RBCs
 
 T.R.0<-0.97 #total proportion of RBCs in circulation that are recipient
 T.D.0<-0.03 #total proportion that are donor
 
 gamma<-0 #adjusts susceptibility based on age
 
-a<-0 #adjustment parameter for erythropoesis in response to anaemia
+a<-0.05 #adjustment parameter for erythropoesis in response to anaemia
 
 gen<-120
+
+response<-"up"
+
+R.norm<-8000000
 
 #Dataframe holding proportion of uninfected recipient RBCs of age x hours (row number)
 RU.df<-as.data.frame(matrix(nrow=4, ncol=1))
@@ -86,90 +90,71 @@ infect.step<-function(unite, df1, df2, B.R, B.D, R.pref, E.pref){
     temp[1:4,5]<-temp[1:4,5]/sum(temp[1:4,5])
     temp[5:8,5]<-temp[5:8,5]/sum(temp[5:8,5])
   }
-  prop.inf<-as.data.frame(temp[,c(1,5)])
+  prop.inf<-as.data.frame(temp)
   
   return(prop.inf)
   
 }
 
 infect.step2<-function(unite, df1, df2, change, PR, PD){
+  para.df<-as.data.frame(matrix(nrow=8, ncol=1))
+  if (unite == "yes"){para.df[,]<-PR+PD} else {
+    para.df[1:4,]<-PR
+    para.df[5:8,]<-PD
+  }
+  names(para.df)<-"P"
+  names(df1)<-"V1"
+  names(df2)<-"V1"
   df<-bind_rows(df1,df2)
+  df<-df %>% 
+    bind_cols(change, para.df) %>% 
+    mutate(para=P*prob) %>% 
+    mutate(rem=V1-para) %>% 
+    mutate(para.rem=para-V1)
+  df[df<0]<-0
+  df<-mutate(df,next.para=para-para.rem)
+  
   if (unite == "yes"){
-    for (i in 1:8){
-      temp.df<-as.data.frame(matrix(nrow=df[i,1], ncol=2))
-      temp.df[,1]<-i
-      temp.df[,2]<-change[i,2]
-      if (i == 1) {final.df<-temp.df} else {final.df<-bind_rows(final.df, temp.df)}
-    }
-    names(final.df)<-c("V1","V2")
-    
-    inf.temp<-sample(final.df$V1, size=(PR+PD), replace = FALSE, prob = final.df$V2)
-    inf.table<-as.data.frame(table(inf.temp))
-    names(inf.table)<-c("V1", "V2")
-    inf.table[,1]<-as.integer(inf.table[,1])
-    
-    inf.df<-as.data.frame(c(1:dim(df)[1]))
-    names(inf.df)<-"V1"
-    inf.df[,1]<-as.integer(inf.df[,1])
-    inf.ab<-full_join(inf.table, inf.df, by="V1")
-    
-    inf.ab[is.na(inf.ab)] <- 0
-    
-  } else if (unite == "no"){
-    for (i in 1:4){
-      temp.df<-as.data.frame(matrix(nrow=df[i,1], ncol=2))
-      temp.df[,1]<-i
-      temp.df[,2]<-change[i,2]
-      if (i == 1) {final.df1<-temp.df} else {final.df1<-bind_rows(final.df1, temp.df)}
-    }
-    names(final.df1)<-c("V1","V2")
-    
-    for (i in 5:8){
-      temp.df<-as.data.frame(matrix(nrow=df[i,1], ncol=2))
-      temp.df[,1]<-i
-      temp.df[,2]<-change[i,2]
-      if (i == 5) {final.df2<-temp.df} else {final.df2<-bind_rows(final.df2, temp.df)}
-    }
-    names(final.df2)<-c("V1","V2") 
-    
-    inf.df1<-as.data.frame(c(1:dim(df1)[1]))
-    inf.df2<-as.data.frame(dim(df1)[1]+c(1:dim(df2)[1]))
-    names(inf.df1)<-"V1"
-    names(inf.df2)<-"V1"
-    inf.df1[,1]<-as.integer(inf.df1[,1])
-    inf.df2[,1]<-as.integer(inf.df2[,1])
-    
-    if (PR > 0){
-      inf.temp1<-sample(final.df1$V1, size=(PR), replace = FALSE, prob = final.df1$V2)
-      inf.table1<-as.data.frame(table(inf.temp1))
-      names(inf.table1)<-c("V1", "V2")
-      inf.table1[,1]<-as.integer(inf.table1[,1])
-      inf.ab1<-full_join(inf.table1, inf.df1, by="V1")
-    } else {
-      inf.table1<-as.data.frame(matrix(nrow=dim(df1)[1], ncol=1))
-      names(inf.table1)<-"V1"
-      inf.table1[,]<-0
-      inf.ab1<-bind_cols(inf.df1, inf.table1)
-    }
-    if (PD > 0){
-      inf.temp2<-sample(final.df2$V1, size=(PD), replace = FALSE, prob = final.df2$V2)
-      inf.table2<-as.data.frame(table(inf.temp2))
-      names(inf.table2)<-c("V1", "V2")
-      inf.table2[,1]<-as.integer(inf.table2[,1])
-      inf.ab2<-full_join(inf.table2, inf.df1, by="V1")
-    } else {
-      inf.table2<-as.data.frame(matrix(nrow=dim(df2)[1], ncol=1))
-      names(inf.table2)<-"V1"
-      inf.table2[,]<-0
-      inf.ab2<-bind_cols(inf.df2, inf.table2)
-    }
-    
-    inf.ab<-bind_rows(inf.ab1, inf.ab2)
-    
-    inf.ab[is.na(inf.ab)] <- 0
+    remainder1<-sum(df$para.rem)
+    remainder2<-remainder1
+  } else {
+    remainder1<-sum(df$para.rem[1:4])
+    remainder2<-sum(df$para.rem[5:8])
   }
   
-  return(inf.ab)
+  df.temp<-filter(df, rem>0)
+  for (i in 1:dim(df.temp)[1]){
+    if (df.temp$index[i] < 5){df.temp$P[i]<-remainder1} else if (df.temp$index[i] > 4) {df.temp$P[i]<-remainder2}
+  }
+  if (unite == "yes"){
+    for (i in 1:dim(df.temp)[1]){
+      df.temp$prob[i]<-df.temp$rem[i]*df.temp$pref[i]*df.temp$B[i]
+    }
+    df.temp$prob<-df.temp$prob/sum(df.temp$prob)
+  } else {
+    for (i in 1:dim(df.temp)[1]){
+      df.temp$prob[i]<-df.temp$rem[i]*df.temp$pref[i]*df.temp$B[i]
+    }
+    temp1<-filter(df.temp, index<5)
+    temp2<-filter(df.temp, index>4)
+    for (i in 1:dim(df.temp)[1]){
+      if (df.temp$index[i] < 5){df.temp$prob[i]<-df.temp$prob[i]/sum(temp1$prob)} else if (df.temp$index[i] > 4) {df.temp$prob[i]<-df.temp$prob[i]/sum(temp2$prob)}
+    }
+  }
+  
+  for (i in 1:dim(df.temp)[1]){
+    df.temp$para[i]<-df.temp$P[i]*df.temp$prob[i]
+  }
+  for (i in 1:dim(df.temp)[1]){
+    df.temp$next.para[i]<-df.temp$next.para[i]+df.temp$para[i]
+  }
+  df.temp$rem<-df.temp$rem-df.temp$P
+  df.temp$para.rem<-df.temp$P-df.temp$rem
+  df.2<-anti_join(df, df.temp, by="index")
+  df.final<-union(df.2,df.temp) %>% arrange(index)
+  df.final[df.final<0]<-0
+  
+  return(df.final[,c(2,9,11)])
 }
 
 retic.step<-function(res, df1, df2){
@@ -180,7 +165,7 @@ retic.step<-function(res, df1, df2){
   } else if (res == "down"){
     retic.df[1,1]<-((R.norm)/(24*60))*(1-(sum(df1, df2)/R.norm)*a)
   } else if (res == "none"){
-    retic.df[1,1]<-((0.03*R.norm)/3)
+    retic.df[1,1]<-((0.03*R.norm)/(24*60))
   }
   
 }
@@ -222,26 +207,12 @@ for (t in 1:gen){
   inf.change<-as.data.frame(infect.step2("no", RU.df, DU.df, inf.change, PR, PD))
   
   #Removes newly infected RBCs from the uninfected to infected class
-  RU.adj<-RU.df
-  if (RU.adj[1,1] < inf.change[1,1]) {RU.adj[1,1]<-0} else {RU.adj[1,1]<-RU.adj[1,1]-inf.change[1,1]}
-  if (RU.adj[2,1] < inf.change[2,1]) {RU.adj[2,1]<-0} else {RU.adj[2,1]<-RU.adj[2,1]-inf.change[2,1]}
-  if (RU.adj[3,1] < inf.change[3,1]) {RU.adj[3,1]<-0} else {RU.adj[3,1]<-RU.adj[3,1]-inf.change[3,1]}
-  if (RU.adj[4,1] < inf.change[4,1]) {RU.adj[4,1]<-0} else {RU.adj[4,1]<-RU.adj[4,1]-inf.change[4,1]}
-  
-  DU.adj<-DU.df
-  if (DU.adj[1,1] < inf.change[5,1]) {DU.adj[1,1]<-0} else {DU.adj[1,1]<-DU.adj[1,1]-inf.change[5,1]}
-  if (DU.adj[2,1] < inf.change[6,1]) {DU.adj[2,1]<-0} else {DU.adj[2,1]<-DU.adj[2,1]-inf.change[6,1]}
-  if (DU.adj[3,1] < inf.change[7,1]) {DU.adj[3,1]<-0} else {DU.adj[3,1]<-DU.adj[3,1]-inf.change[7,1]}
-  if (DU.adj[4,1] < inf.change[8,1]) {DU.adj[4,1]<-0} else {DU.adj[4,1]<-DU.adj[4,1]-inf.change[8,1]}
+  RU.adj<-as.data.frame(inf.change[1:4,2])
+  DU.adj<-as.data.frame(inf.change[5:8,2])
   
   #Create dataframes with newly infected cells
-  next.DI<-as.data.frame(matrix(nrow=4,ncol=1))
-  next.DI[1:3,1]<-(inf.change[3,2]/3)
-  next.DI[4,1]<-(inf.change[4,2])
-  
-  next.RI<-as.data.frame(matrix(nrow=4,ncol=1))
-  next.RI[1:3,1]<-(inf.change[1,2]/3)
-  next.RI[4,1]<-(inf.change[2,2])
+  next.DI<-as.data.frame(inf.change[5:8,3])
+  next.RI<-as.data.frame(inf.change[1:4,3])
   
   #Shifts columns so that parasites age
   DI.adj<-bind_cols(next.DI, DI.df[,1:(mat.D-1)])
@@ -338,6 +309,8 @@ for (t in 1:gen){
   P.sum[t,1]<-(Burst.tot.D*P.D)+(Burst.tot.R*P.R)
   P.sum[t,2]<-(Burst.tot.R*P.R)
   P.sum[t,3]<-(Burst.tot.D*P.D)
+  
+  print(t)
   
 } #end loop over t
 
