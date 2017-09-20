@@ -1,7 +1,7 @@
 library(dplyr)
 
-E.pref<-0.1 #preference for erythrocytes
-R.pref<-1 #preferences for reticulocytes
+E.pref<-0.01 #preference for erythrocytes
+R.pref<-1.5 #preferences for reticulocytes
 
 B.R<-0.5 #susceptibility factor for recipient RBCs
 B.D<-0.5 #susceptibility factor for donor RBCs
@@ -12,20 +12,25 @@ mat.R<-24 #average number of hours for parasite to mature in recipient RBC
 P.D<-5 #parasites produced from a burst donor RBC
 P.R<-5 #parasites produced from a burst recipient RBC
 
-R.0<-11700000000 #starting concentration of RBCs
+R.0<-9150000000 #starting concentration of RBCs
 
 T.R.0<-0.97 #total proportion of RBCs in circulation that are recipient
 T.D.0<-0.03 #total proportion that are donor
 
 gamma<-0 #adjusts susceptibility based on age
 
-a<-0.05 #adjustment parameter for erythropoesis in response to anaemia
+a<-0.25 #adjustment parameter for erythropoesis in response to anaemia
+age.sub<-R.norm*0.01/24
 
 gen<-120
 
-response<-"up"
+response<-"no"
 
-R.norm<-8000000
+kill.rate<-0.0095
+clear.rate<-kill.rate
+
+R.norm<-9150000000
+
 
 #Dataframe holding proportion of uninfected recipient RBCs of age x hours (row number)
 RU.df<-as.data.frame(matrix(nrow=4, ncol=1))
@@ -160,12 +165,10 @@ infect.step2<-function(unite, df1, df2, change, PR, PD){
 retic.step<-function(res, df1, df2){
   
   retic.df<-as.data.frame(matrix(nrow=1, ncol=1))
-  if (res == "up"){
-    retic.df[1,1]<-((R.norm)/(24*60))*(1+(sum(df1, df2)/R.norm)*a)
-  } else if (res == "down"){
-    retic.df[1,1]<-((R.norm)/(24*60))*(1-(sum(df1, df2)/R.norm)*a)
-  } else if (res == "none"){
-    retic.df[1,1]<-((0.03*R.norm)/(24*60))
+  if (res == "yes"){
+    retic.df[1,1]<-(R.norm-sum(df1))*a
+  } else if (res == "no"){
+    retic.df[1,1]<-((0.03*R.norm)/(24))
   }
   
 }
@@ -218,76 +221,116 @@ for (t in 1:gen){
   DI.adj<-bind_cols(next.DI, DI.df[,1:(mat.D-1)])
   RI.adj<-bind_cols(next.RI, RI.df[,1:(mat.R-1)])
   
-  #Remove proportion of oldest recipient RBCs, move to next age class
-  if (RU.adj[1,1] < 5555.556) {adj1<-RU.adj[1,1]} else {adj1<-5555.556}
-  if (RU.adj[2,1] < 5555.556) {adj2<-RU.adj[2,1]} else {adj2<-5555.556}
-  if (RU.adj[3,1] < 5555.556) {adj3<-RU.adj[3,1]} else {adj3<-5555.556}
-  if (RU.adj[4,1] < 5555.556) {adj4<-RU.adj[4,1]} else {adj4<-5555.556}
-  
-  next1<-as.data.frame(retic.step(response, RU.df, RI.df))[1,1]
-  next2<-adj1
-  next3<-adj2
-  next4<-adj3
-  
-  RU.adj[1,1]<-RU.adj[1,1]-adj1+next1
-  RU.adj[2,1]<-RU.adj[2,1]-adj2+next2
-  RU.adj[3,1]<-RU.adj[3,1]-adj3+next3
-  RU.adj[4,1]<-RU.adj[4,1]-adj4+next4
-  
-  #Remove proportion of oldest donor RBCs, move to next age class
-  if (DU.adj[1,1] < 5555.556) {adj1<-DU.adj[1,1]} else {adj1<-5555.556}
-  if (DU.adj[2,1] < 5555.556) {adj2<-DU.adj[2,1]} else {adj2<-5555.556}
-  if (DU.adj[3,1] < 5555.556) {adj3<-DU.adj[3,1]} else {adj3<-5555.556}
-  if (DU.adj[4,1] < 5555.556) {adj4<-DU.adj[4,1]} else {adj4<-5555.556}
-  next1<-as.data.frame(retic.step(response, DU.df, DI.df))[1,1]
-  next2<-adj1
-  next3<-adj2
-  next4<-adj3
-  
-  DU.adj[1,1]<-DU.adj[1,1]-adj1+next1
-  DU.adj[2,1]<-DU.adj[2,1]-adj2+next2
-  DU.adj[3,1]<-DU.adj[3,1]-adj3+next3
-  DU.adj[4,1]<-DU.adj[4,1]-adj4+next4
-  
-  #Remove proportion of oldest recipient RBCs, move to next age class
-  for (i in 1:mat.R){
+  if (t < 25){
+    if (RU.adj[1,1] < age.sub) {adj1<-RU.adj[1,1]} else {adj1<-age.sub}
+    if (RU.adj[2,1] < age.sub) {adj2<-RU.adj[2,1]} else {adj2<-age.sub}
+    if (RU.adj[3,1] < age.sub) {adj3<-RU.adj[3,1]} else {adj3<-age.sub}
+    if (RU.adj[4,1] < age.sub) {adj4<-RU.adj[4,1]} else {adj4<-age.sub}
     
-    if (RI.adj[1,i] < 5555.556) {adj1<-RI.adj[1,i]} else {adj1<-5555.556}
-    if (RI.adj[2,i] < 5555.556) {adj2<-RI.adj[2,i]} else {adj2<-5555.556}
-    if (RI.adj[3,i] < 5555.556) {adj3<-RI.adj[3,i]} else {adj3<-5555.556}
-    if (RI.adj[4,i] < 5555.556) {adj4<-RI.adj[4,i]} else {adj4<-5555.556}
+    next1<-as.data.frame(retic.step(response, RU.df, RI.df))[1,1]
+    next2<-adj1
+    next3<-adj2
+    next4<-adj3
+    
+    RU.adj[1,1]<-RU.adj[1,1]-adj1+next1
+    RU.adj[2,1]<-RU.adj[2,1]-adj2+next2
+    RU.adj[3,1]<-RU.adj[3,1]-adj3+next3
+    RU.adj[4,1]<-(RU.adj[4,1]*(1-kill.rate))-adj4+next4
+  } else if (t > 24){
+    next1<-as.data.frame(retic.step(response, RU.df, RI.df))[1,1]
+    next2<-RU.age[t-24,1]
+    next3<-RU.age[t-24,2]
+    next4<-RU.age[t-24,3]
+    
+    RU.adj[1,1]<-RU.adj[1,1]-next2+next1
+    RU.adj[2,1]<-RU.adj[2,1]-next3+next2
+    RU.adj[3,1]<-RU.adj[3,1]-next4+next3
+    RU.adj[4,1]<-(RU.df[4,1]*(1-kill.rate))-RU.age[t-24,4]*(1/60)*(1/24)+next4
+  }
+  
+  if (t < 25){
+    if (DU.adj[1,1] < age.sub) {adj1<-DU.adj[1,1]} else {adj1<-age.sub}
+    if (DU.adj[2,1] < age.sub) {adj2<-DU.adj[2,1]} else {adj2<-age.sub}
+    if (DU.adj[3,1] < age.sub) {adj3<-DU.adj[3,1]} else {adj3<-age.sub}
+    if (DU.adj[4,1] < age.sub) {adj4<-DU.adj[4,1]} else {adj4<-age.sub}
+    
+    next1<-as.data.frame(retic.step(response, DU.df, DI.df))[1,1]
+    next2<-adj1
+    next3<-adj2
+    next4<-adj3
+    
+    DU.adj[1,1]<-DU.adj[1,1]-adj1+next1
+    DU.adj[2,1]<-DU.adj[2,1]-adj2+next2
+    DU.adj[3,1]<-DU.adj[3,1]-adj3+next3
+    DU.adj[4,1]<-(DU.adj[4,1]*(1-kill.rate))-adj4+next4
+  } else if (t > 24){
+    next1<-as.data.frame(retic.step(response, DU.df, DI.df))[1,1]
+    next2<-DU.age[t-24,1]
+    next3<-DU.age[t-24,2]
+    next4<-DU.age[t-24,3]
+    
+    DU.adj[1,1]<-DU.adj[1,1]-next2+next1
+    DU.adj[2,1]<-DU.adj[2,1]-next3+next2
+    DU.adj[3,1]<-DU.adj[3,1]-next4+next3
+    DU.adj[4,1]<-(DU.df[4,1]*(1-kill.rate))-DU.age[t-24,4]*(1/60)*(1/24)+next4
+  }
+for (i in 1:mat.R){  
+  if (t < 25){
+    if (RI.adj[1,i] < age.sub) {adj1<-RI.adj[1,i]} else {adj1<-age.sub}
+    if (RI.adj[2,i] < age.sub) {adj2<-RI.adj[2,i]} else {adj2<-age.sub}
+    if (RI.adj[3,i] < age.sub) {adj3<-RI.adj[3,i]} else {adj3<-age.sub}
+    if (RI.adj[4,i] < age.sub) {adj4<-RI.adj[4,i]} else {adj4<-age.sub}
     
     next1<-0
     next2<-adj1
     next3<-adj2
     next4<-adj3
     
-    RI.adj[1,i]<-RI.adj[1,i]-adj1+next1
-    RI.adj[2,i]<-RI.adj[2,i]-adj2+next2
-    RI.adj[3,i]<-RI.adj[3,i]-adj3+next3
-    RI.adj[4,i]<-RI.adj[4,i]-adj4+next4
+    RI.adj[1,i]<-(RI.adj[1,i]*(1-clear.rate))-adj1+next1
+    RI.adj[2,i]<-(RI.adj[2,i]*(1-clear.rate))-adj2+next2
+    RI.adj[3,i]<-(RI.adj[3,i]*(1-clear.rate))-adj3+next3
+    RI.adj[4,i]<-(RI.adj[4,i]*(1-clear.rate))-adj4+next4
+  } else if (t > 24){
+    next1<-0
+    next2<-RI.age[t-24,1]
+    next3<-RI.age[t-24,2]
+    next4<-RI.age[t-24,3]
     
+    RI.adj[1,i]<-(RI.adj[1,i]*(1-clear.rate))-next2+next1
+    RI.adj[2,i]<-(RI.adj[2,i]*(1-clear.rate))-next3+next2
+    RI.adj[3,i]<-(RI.adj[3,i]*(1-clear.rate))-next4+next3
+    RI.adj[4,i]<-(RI.df[4,i]*(1-clear.rate))-RI.age[t-24,4]*(1/60)*(1/24)+next4
   }
-  
-  #Remove proportion of oldest recipient RBCs, move to next age class
-  for (i in 1:mat.D){
-    
-    if (DI.adj[1,i] < 5555.556) {adj1<-DI.adj[1,i]} else {adj1<-5555.556}
-    if (DI.adj[2,i] < 5555.556) {adj2<-DI.adj[2,i]} else {adj2<-5555.556}
-    if (DI.adj[3,i] < 5555.556) {adj3<-DI.adj[3,i]} else {adj3<-5555.556}
-    if (DI.adj[4,i] < 5555.556) {adj4<-DI.adj[4,i]} else {adj4<-5555.556}
+} #end i loop
+
+for (i in 1:mat.D){  
+  if (t < 25){
+    if (DI.adj[1,i] < age.sub) {adj1<-DI.adj[1,i]} else {adj1<-age.sub}
+    if (DI.adj[2,i] < age.sub) {adj2<-DI.adj[2,i]} else {adj2<-age.sub}
+    if (DI.adj[3,i] < age.sub) {adj3<-DI.adj[3,i]} else {adj3<-age.sub}
+    if (DI.adj[4,i] < age.sub) {adj4<-DI.adj[4,i]} else {adj4<-age.sub}
     
     next1<-0
     next2<-adj1
     next3<-adj2
     next4<-adj3
     
-    DI.adj[1,i]<-DI.adj[1,i]-adj1+next1
-    DI.adj[2,i]<-DI.adj[2,i]-adj2+next2
-    DI.adj[3,i]<-DI.adj[3,i]-adj3+next3
-    DI.adj[4,i]<-DI.adj[4,i]-adj4+next4
+    DI.adj[1,i]<-(DI.adj[1,i]*(1-clear.rate))-adj1+next1
+    DI.adj[2,i]<-(DI.adj[2,i]*(1-clear.rate))-adj2+next2
+    DI.adj[3,i]<-(DI.adj[3,i]*(1-clear.rate))-adj3+next3
+    DI.adj[4,i]<-(DI.adj[4,i]*(1-clear.rate))-adj4+next4
+  } else if (t > 24){
+    next1<-0
+    next2<-DI.age[t-24,1]
+    next3<-DI.age[t-24,2]
+    next4<-DI.age[t-24,3]
     
-  }
+    DI.adj[1,i]<-(DI.adj[1,i]*(1-clear.rate))-next2+next1
+    DI.adj[2,i]<-(DI.adj[2,i]*(1-clear.rate))-next3+next2
+    DI.adj[3,i]<-(DI.adj[3,i]*(1-clear.rate))-next4+next3
+    DI.adj[4,i]<-(DI.df[4,i]*(1-clear.rate))-DI.age[t-24,4]*(1/60)*(1/24)+next4
+  } 
+} #end i loop 
   
   #Set adjusted dataframes as next-generation dataframes
   RU.df<-RU.adj
