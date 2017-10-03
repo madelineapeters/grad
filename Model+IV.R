@@ -1,28 +1,28 @@
 library(dplyr)
 
-gen<-120
+gen<-121
 
 E.pref<-0.01 #preference for erythrocytes
 R.pref<-1.5 #preferences for reticulocytes
 
 mat<-24 #average number of hours for parasite to mature in RBC
 
-p<-5 #parasites produced from a burst donor RBC
+p<-8 #parasites produced from a burst donor RBC
 
 R.0<-    #starting concentration of RBCs
-R.norm<-9150000000 #normal number of RBCs in healthy host
+R.norm<-9450000000 #normal number of RBCs in healthy host
 
 E.R.0<-0.97 #total proportion of RBCs in circulation that are erythrocytes
 R.D.0<-0.03 #total proportion that are reticulocytes
 
 gamma<-0 #adjusts susceptibility based on age
 
-a<-0.25 #adjustment parameter for erythropoesis in response to anaemia
+a<-0.1 #adjustment parameter for erythropoesis in response to anaemia
 age.sub<-R.norm*0.01/24
-response<-"no"
+response<-"yes"
 
-kill.rate<-0
-clear.rate<-0.0095
+kill.rate<-(1-0.00025)/24
+clear.rate<-(1/48)/24
 
 #Dataframe holding proportion of uninfected recipient RBCs of age x hours (row number)
 U.df<-as.data.frame(matrix(nrow=4, ncol=1))
