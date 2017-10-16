@@ -1,0 +1,357 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     10304,        349]
+NotebookOptionsPosition[      9581,        323]
+NotebookOutlinePosition[      9938,        339]
+CellTagsIndexPosition[      9895,        336]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Clear", "[", "\"\<Global`*\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.716900518639328*^9, 3.716900537814699*^9}, {
+  3.716901629557438*^9, 3.7169016428361397`*^9}, {3.716904821303183*^9, 
+  3.716904845553684*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  FractionBox[
+   RowBox[{"(", 
+    RowBox[{"a", "*", "b", "*", "x"}], ")"}], 
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"1", "-", "b"}], ")"}], "*", "0.01"}], "+", 
+    RowBox[{"b", "*", "x"}]}]], "=", 
+  RowBox[{"g", "*", "b", "*", "h"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  FractionBox[
+   RowBox[{"(", 
+    RowBox[{"a", "*", "x"}], ")"}], 
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"1", "-", "b"}], ")"}], "*", "0.01"}], "+", 
+    RowBox[{"b", "*", "x"}]}]], "=", 
+  RowBox[{"g", "*", "h"}]}]}], "Input",
+ CellChangeTimes->{{3.717005341198369*^9, 3.7170053953625937`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  FractionBox[
+   RowBox[{"(", 
+    RowBox[{"a", "*", "x"}], ")"}], 
+   RowBox[{"g", "*", "h"}]], "=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"1", "-", "b"}], ")"}], "*", "0.01"}], "+", 
+   RowBox[{"b", "*", "x"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"x", 
+   RowBox[{"(", 
+    RowBox[{
+     FractionBox["a", 
+      RowBox[{"g", "*", "h"}]], "-", "b"}], ")"}]}], "=", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{"1", "-", "b"}], ")"}], "*", "0.01"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  FractionBox["1", "x"], "=", 
+  FractionBox[
+   RowBox[{"(", 
+    RowBox[{
+     FractionBox["a", 
+      RowBox[{"g", "*", "h"}]], "-", "b"}], ")"}], 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"1", "-", "b"}], ")"}], "*", 
+    "0.01"}]]}], "\[IndentingNewLine]", 
+ RowBox[{
+  FractionBox["1", "x"], "=", 
+  FractionBox[
+   RowBox[{"(", 
+    RowBox[{
+     FractionBox["a", 
+      RowBox[{"g", "*", "h"}]], "-", "1", "+", "1", "-", "b"}], ")"}], 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"1", "-", "b"}], ")"}], "*", 
+    "0.01"}]]}], "\[IndentingNewLine]", 
+ RowBox[{
+  FractionBox["1", "x"], "=", 
+  FractionBox[
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      FractionBox["a", 
+       RowBox[{"g", "*", "h"}]], "-", "1"}], ")"}], "+", 
+    RowBox[{"(", 
+     RowBox[{"1", "-", "b"}], ")"}]}], 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"1", "-", "b"}], ")"}], "*", 
+    "0.01"}]]}], "\[IndentingNewLine]", 
+ RowBox[{
+  FractionBox["1", "x"], "=", 
+  RowBox[{
+   FractionBox[
+    RowBox[{"(", 
+     RowBox[{
+      FractionBox["a", 
+       RowBox[{"g", "*", "h"}]], "-", "1"}], ")"}], 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"1", "-", "b"}], ")"}], "*", "0.01"}]], "+", 
+   FractionBox[
+    RowBox[{"(", 
+     RowBox[{"1", "-", "b"}], ")"}], 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"1", "-", "b"}], ")"}], "*", 
+     "0.01"}]]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  FractionBox["1", "x"], "=", 
+  RowBox[{
+   FractionBox[
+    RowBox[{"(", 
+     RowBox[{
+      FractionBox["a", 
+       RowBox[{"g", "*", "h"}]], "-", "1"}], ")"}], 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"1", "-", "b"}], ")"}], "*", "0.01"}]], "+", 
+   FractionBox["1", "0.01"]}]}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.717005405423814*^9, 3.717005636856474*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"x", "=", 
+   FractionBox["1", 
+    RowBox[{
+     FractionBox[
+      RowBox[{"(", 
+       RowBox[{
+        FractionBox["a", 
+         RowBox[{"g", "*", "h"}]], "-", "1"}], ")"}], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"1", "-", "b"}], ")"}], "*", "0.01"}]], "+", 
+     FractionBox["1", "0.01"]}]]}], ";"}]], "Input",
+ CellChangeTimes->{{3.717005648056038*^9, 3.7170056798738527`*^9}},
+ Background->RGBColor[1, 0.9, 0.8]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"a", "=", "0.006"}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+   "parasitaemia", " ", "of", " ", "host", " ", "at", " ", "24", "h"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"g", "=", "0.042"}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+   "parasitaemia", " ", "of", " ", "donor", " ", "at", " ", "transfusion"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"h", "=", "0.027"}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{
+   "proportion", " ", "of", " ", "initial", " ", "infected", " ", "donor", 
+    " ", "cells", " ", "remaining", " ", "infected", " ", "at", " ", "24", 
+    "h"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"b", "=", "0.031"}], ";", " ", 
+  RowBox[{"(*", 
+   RowBox[{
+   "proportion", " ", "of", " ", "total", " ", "RBCs", " ", "coming", " ", 
+    "from", " ", "donor", " ", "at", " ", "transfusion"}], "*)"}]}]}], "Input",\
+
+ CellChangeTimes->{{3.717005687253984*^9, 3.717005689788398*^9}, {
+  3.7170057366700478`*^9, 3.717005889401478*^9}},
+ Background->RGBColor[1, 0.9, 0.8]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"aerror", "=", "0.0005"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"gerror", "=", "0.0007"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"herror", "=", "0.004"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"berror", "=", "0.001"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.717005898098628*^9, 3.717005911133214*^9}, {
+  3.7170059667218513`*^9, 3.7170059936884212`*^9}},
+ Background->RGBColor[1, 0.9, 0.8]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"xerror", "=", 
+   RowBox[{"x", "*", 
+    RowBox[{"Sqrt", "[", 
+     RowBox[{
+      SuperscriptBox[
+       RowBox[{"(", 
+        FractionBox["aerror", "a"], ")"}], "2"], "+", 
+      SuperscriptBox[
+       RowBox[{"(", 
+        FractionBox["berror", "b"], ")"}], "2"], "+", 
+      SuperscriptBox[
+       RowBox[{"(", 
+        FractionBox["gerror", "g"], ")"}], "2"], "+", 
+      SuperscriptBox[
+       RowBox[{"(", 
+        FractionBox["herror", "h"], ")"}], "2"]}], "]"}]}]}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.717006037380631*^9, 3.717006148142964*^9}, {
+  3.717006349214262*^9, 3.7170063496619062`*^9}},
+ Background->RGBColor[1, 0.9, 0.8]],
+
+Cell[BoxData[
+ RowBox[{"x", "=", " ", 
+  RowBox[{"0.00184", " ", "+", 
+   RowBox[{"/", 
+    RowBox[{"-", " ", "0.00032"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.7170063719121113`*^9, 3.7170064012834806`*^9}},
+ Background->RGBColor[1, 0.9, 0.8]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"y", "=", 
+   RowBox[{"x", 
+    RowBox[{"(", 
+     RowBox[{
+      FractionBox[
+       RowBox[{"(", 
+        RowBox[{
+         FractionBox["a2", 
+          RowBox[{"g2", "*", "h2"}]], "-", "1"}], ")"}], 
+       RowBox[{"(", 
+        RowBox[{"1", "-", "b2"}], ")"}]], "+", "1"}], ")"}]}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.7170066291797123`*^9, 3.717006662067128*^9}, {
+  3.717006804048717*^9, 3.717006857747143*^9}},
+ Background->RGBColor[1, 0.85, 0.85]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"a2", "=", "0.0032"}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+   "parasitaemia", " ", "of", " ", "host", " ", "at", " ", "24", "h"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"g2", "=", "0.045"}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+   "parasitaemia", " ", "of", " ", "donor", " ", "at", " ", "transfusion"}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"h2", "=", "0.32"}], ";"}], 
+  RowBox[{"(*", 
+   RowBox[{
+   "proportion", " ", "of", " ", "initial", " ", "infected", " ", "donor", 
+    " ", "cells", " ", "remaining", " ", "infected", " ", "at", " ", "24", 
+    "h"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"b2", "=", "0.036"}], ";", " ", 
+  RowBox[{"(*", 
+   RowBox[{
+   "proportion", " ", "of", " ", "total", " ", "RBCs", " ", "coming", " ", 
+    "from", " ", "donor", " ", "at", " ", "transfusion"}], "*)"}]}]}], "Input",\
+
+ CellChangeTimes->{{3.717006569033618*^9, 3.7170066048521023`*^9}},
+ Background->RGBColor[1, 0.85, 0.85]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"a2error", "=", "0.0003"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"g2error", "=", "0.0005"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"h2error", "=", "0.02"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"b2error", "=", "0.001"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.7170070044975967`*^9, 3.717007036713667*^9}},
+ Background->RGBColor[1, 0.85, 0.85]],
+
+Cell[BoxData[
+ RowBox[{"yerror", "=", 
+  RowBox[{"y", "*", 
+   RowBox[{"Sqrt", "[", 
+    RowBox[{
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox["a2error", "a2"], ")"}], "2"], "+", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox["g2error", "g2"], ")"}], "2"], "+", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox["h2error", "h2"], ")"}], "2"], "+", 
+     SuperscriptBox[
+      RowBox[{"(", 
+       FractionBox["b2error", "b2"], ")"}], "2"]}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.717006934778633*^9, 3.717006992299161*^9}},
+ Background->RGBColor[1, 0.85, 0.85]],
+
+Cell[BoxData[
+ RowBox[{"y", "=", 
+  RowBox[{"0.000356", " ", "+", 
+   RowBox[{"/", 
+    RowBox[{"-", " ", "0.0000415"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.717007051828494*^9, 3.717007073700391*^9}},
+ Background->RGBColor[1, 0.85, 0.85]]
+},
+WindowSize->{939, 968},
+WindowMargins->{{Automatic, 0}, {Automatic, 0}},
+FrontEndVersion->"11.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
+21, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 239, 4, 32, "Input"],
+Cell[800, 26, 635, 21, 93, "Input"],
+Cell[1438, 49, 2313, 86, 395, "Input"],
+Cell[3754, 137, 468, 15, 88, "Input"],
+Cell[4225, 154, 1108, 32, 112, "Input"],
+Cell[5336, 188, 466, 11, 112, "Input"],
+Cell[5805, 201, 682, 21, 69, "Input"],
+Cell[6490, 224, 244, 6, 48, "Input"],
+Cell[6737, 232, 497, 16, 87, "Input"],
+Cell[7237, 250, 1065, 31, 112, "Input"],
+Cell[8305, 283, 420, 10, 112, "Input"],
+Cell[8728, 295, 606, 18, 69, "Input"],
+Cell[9337, 315, 240, 6, 48, "Input"]
+}
+]
+*)
+
