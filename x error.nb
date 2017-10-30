@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     14894,        503]
-NotebookOptionsPosition[     14055,        474]
-NotebookOutlinePosition[     14412,        490]
-CellTagsIndexPosition[     14369,        487]
+NotebookDataLength[     16854,        571]
+NotebookOptionsPosition[     15640,        529]
+NotebookOutlinePosition[     15997,        545]
+CellTagsIndexPosition[     15954,        542]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -470,7 +470,62 @@ RFss5TsOooXufT8JogG565nJ
 
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.717347755954833*^9, 3.7173477674827433`*^9}, 
-   3.7173480865900917`*^9}]
+   3.7173480865900917`*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox[
+   RowBox[{"(", 
+    RowBox[{"0.0033", "*", "0.002"}], ")"}], 
+   RowBox[{
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"1", "-", "0.036"}], ")"}], "*", "y"}], "+", 
+    RowBox[{"0.036", "*", "0.002"}]}]], "=", 
+  RowBox[{"0.045", "*", "0.32"}]}]], "Input",
+ CellChangeTimes->{{3.717534434628488*^9, 3.717534518927095*^9}}],
+
+Cell[BoxData[
+ TemplateBox[{
+  "Set","write",
+   "\"Tag \\!\\(\\*RowBox[{\\\"Times\\\"}]\\) in \
+\\!\\(\\*FractionBox[RowBox[{\\\"0.002`\\\", \\\" \\\", \\\"0.0033`\\\"}], \
+RowBox[{RowBox[{\\\"0.000072`\\\", \\\"\[VeryThinSpace]\\\"}], \\\"+\\\", \
+RowBox[{\\\"0.964`\\\", \\\" \\\", \\\"y\\\"}]}]]\\) is Protected.\"",2,1,1,
+   26142728314391580196,"Local"},
+  "MessageTemplate"]], "Message", "MSG",
+ CellChangeTimes->{3.7175345215114813`*^9}],
+
+Cell[BoxData["0.0144`"], "Output",
+ CellChangeTimes->{3.717534521514617*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox[
+   RowBox[{"(", 
+    RowBox[{"0.0033", "*", "0.002"}], ")"}], 
+   RowBox[{"0.045", "*", "0.32"}]], "-", 
+  RowBox[{"0.036", "*", "0.002"}]}]], "Input",
+ CellChangeTimes->{{3.717534527093173*^9, 3.717534563251951*^9}}],
+
+Cell[BoxData["0.0003863333333333333`"], "Output",
+ CellChangeTimes->{3.717534564847377*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ FractionBox["0.0003863333333333333", "0.964"]], "Input",
+ CellChangeTimes->{{3.717534573902176*^9, 3.7175345795217876`*^9}}],
+
+Cell[BoxData["0.00040076071922544955`"], "Output",
+ CellChangeTimes->{3.717534582117053*^9}]
+}, Open  ]]
 },
 WindowSize->{956, 953},
 WindowMargins->{{Automatic, 0}, {Automatic, 0}},
@@ -504,7 +559,20 @@ Cell[8590, 288, 420, 10, 112, "Input"],
 Cell[9013, 300, 606, 18, 69, "Input"],
 Cell[9622, 320, 240, 6, 48, "Input"],
 Cell[9865, 328, 4061, 140, 410, "Input"],
-Cell[13929, 470, 122, 2, 32, "Input"]
+Cell[13929, 470, 122, 2, 32, "Input"],
+Cell[CellGroupData[{
+Cell[14076, 476, 363, 11, 52, "Input"],
+Cell[14442, 489, 445, 9, 41, "Message"],
+Cell[14890, 500, 76, 1, 32, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[15003, 506, 256, 7, 50, "Input"],
+Cell[15262, 515, 91, 1, 32, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[15390, 521, 139, 2, 50, "Input"],
+Cell[15532, 525, 92, 1, 66, "Output"]
+}, Open  ]]
 }
 ]
 *)
